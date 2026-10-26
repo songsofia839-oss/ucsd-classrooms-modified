@@ -1,0 +1,129 @@
+/* Full-screen overlay */
+.welcome-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+
+  display: grid !important;
+  place-items: center !important;
+
+  padding: 20px;
+  box-sizing: border-box;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  z-index: 99999;
+}
+
+/* Welcome dialog */
+.welcome-modal {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+
+  width: min(420px, 100%);
+  max-width: 420px;
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
+
+  overflow-y: auto;
+  margin: 0 !important;
+  padding: 30px;
+  box-sizing: border-box;
+
+  color: var(--text);
+  background-color: var(--modal);
+  border: 1px solid var(--card-line);
+  border-radius: 15px;
+  box-shadow: var(--modal-shadow);
+
+  font-family: var(--normal);
+  text-align: left;
+}
+
+/* Heading */
+.welcome-modal h2 {
+  margin: 0 0 15px;
+  color: var(--text);
+  font-family: var(--normal);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Description */
+.welcome-modal p {
+  margin: 0 0 24px;
+  color: var(--secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.welcome-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.welcome-actions button {
+  min-height: 40px;
+  padding: 10px 16px;
+  border: 1px solid var(--card-line);
+  border-radius: 8px;
+
+  color: var(--text);
+  font-family: var(--normal);
+  font-size: 14px;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.welcome-actions .welcome-primary {
+  border-color: transparent;
+  background-color: var(--button);
+  color: white;
+}
+
+.welcome-actions .welcome-primary:hover {
+  background-color: var(--button-hover);
+}
+
+.welcome-actions .welcome-secondary {
+  background-color: transparent;
+}
+
+.welcome-actions .welcome-secondary:hover {
+  background-color: var(--result-hover);
+}
+
+/* Mobile screens */
+@media (max-width: 530px) {
+  .welcome-modal {
+    padding: 24px 20px;
+  }
+
+  .welcome-modal h2 {
+    font-size: 20px;
+  }
+
+  .welcome-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .welcome-actions button {
+    width: 100%;
+  }
+}
