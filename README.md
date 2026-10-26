@@ -1,6 +1,7 @@
 # UCSD classroom schedules
 
-[Live](https://sheeptester.github.io/ucsd-classrooms/)
+Live: 
+https://songsofia839-oss.github.io/ucsd-classrooms-modified/
 
 ![Screenshot of classrooms website](./static/open-graph.png)
 
