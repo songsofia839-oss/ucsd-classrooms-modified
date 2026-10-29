@@ -859,15 +859,15 @@ input[type="checkbox"]:checked:hover {
   font-size: 0.8em;
 }
 .active .current-meeting {
-  color: var(--active);
+  color: var(--secondary);
 }
 .soon .current-meeting {
   color: var(--soon);
 }
 .inactive .current-meeting {
   font-family: var(--normal);
+  color: var(--active);
 }
-
 .schedule {
   display: flex;
   flex-direction: column;
