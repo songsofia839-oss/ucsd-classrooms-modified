@@ -70,7 +70,7 @@ export function BuildingButton({
           <>
             <span className="in-use">
               {
-                rooms.filter((meetings) =>
+               rooms.filter((meetings) =>
                   meetings.some((meeting) => isMeetingOngoing(meeting, moment))
                 ).length
               }
