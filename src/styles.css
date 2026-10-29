@@ -1728,3 +1728,22 @@ input[type="checkbox"]:checked:hover {
 .term-buttons {
   display: none;
 }
+
+.tutorial-help-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tutorial-help-button:hover {
+  background: #2563eb;
+}
