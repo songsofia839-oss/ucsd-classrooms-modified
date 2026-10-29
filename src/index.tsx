@@ -5,11 +5,15 @@ import "./styles.css";
 import WelcomeModal from "./components/WelcomeModal";
 
 function Root() {
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(
+    () => localStorage.getItem("welcomeSeen") !== "true"
+  );
   const [showTutorial, setShowTutorial] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
   const handleStartTutorial = () => {
+    localStorage.setItem("welcomeSeen", "true");
+    setVideoError(false);
     setShowWelcome(false);
     setShowTutorial(true);
   };
@@ -27,6 +31,17 @@ function Root() {
   return (
     <StrictMode>
       <App title={document.title} />
+      {!showWelcome && !showTutorial && (
+        <button
+          className="tutorial-help-button"
+          onClick={() => {
+            setVideoError(false);
+            setShowTutorial(true);
+          }}
+        >
+          ? Help
+        </button>
+      )}
 
       {showWelcome && (
         <WelcomeModal
