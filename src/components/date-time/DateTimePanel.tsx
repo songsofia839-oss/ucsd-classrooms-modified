@@ -66,9 +66,10 @@ export function DateTimePanel({
     }
     const startChanged =
       !prev || prev.dayId !== next.dayId || prev.startMin !== next.startMin;
+    setTimeRange(next);
     if (useNow) onUseNow(false);
     if (useNow || startChanged) onTime(minutesToTime(next.startMin));
-    setTimeRange(next);
+    // setTimeRange(next);
   };
 
   const handleGridDate = (d: Day) => {
