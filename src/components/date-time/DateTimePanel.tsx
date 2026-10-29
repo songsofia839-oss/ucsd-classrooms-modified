@@ -32,6 +32,7 @@ export type DateTimePanelProps = {
   onDate: (date: Day) => void;
   time: Time;
   onTime: (customTime: Time) => void;
+  onSelection: (range: TimeRange) => void;
   useNow: boolean;
   onUseNow: (useNow: boolean) => void;
   visible: boolean;
@@ -44,6 +45,7 @@ export function DateTimePanel({
   onDate,
   time,
   onTime,
+  onSelection,
   useNow,
   onUseNow,
   visible,
@@ -54,23 +56,28 @@ export function DateTimePanel({
   const range = useTimeRange();
 
   // Called while dragging: applies the selection to the app immediately.
-  const handleRange = (next: TimeRange) => {
-    const prev = getTimeRange();
+const handleRange = (next: TimeRange) => {
+  const prev = getTimeRange();
     if (
-      prev &&
-      prev.dayId === next.dayId &&
-      prev.startMin === next.startMin &&
-      prev.endMin === next.endMin
-    ) {
-      return;
-    }
-    const startChanged =
-      !prev || prev.dayId !== next.dayId || prev.startMin !== next.startMin;
-    setTimeRange(next);
-    if (useNow) onUseNow(false);
-    if (useNow || startChanged) onTime(minutesToTime(next.startMin));
-    // setTimeRange(next);
-  };
+    prev &&
+    prev.dayId === next.dayId &&
+    prev.startMin === next.startMin &&
+    prev.endMin === next.endMin
+  ) {
+    return;
+  }
+
+  setTimeRange(next);
+
+  if (
+    useNow ||
+    !prev ||
+    prev.dayId !== next.dayId ||
+    prev.startMin !== next.startMin
+  ) {
+    onSelection(next);
+  }
+};
 
   const handleGridDate = (d: Day) => {
     onUseNow(false);
@@ -222,7 +229,6 @@ function WeeklyTimeGrid({ date, onDate, range, onRange }: WeeklyTimeGridProps) {
               e.currentTarget.setPointerCapture(e.pointerId);
               const slot = slotAt(e);
               drag.current = { anchor: slot };
-              if (d.id !== date.id) onDate(d);
               onRange({
                 dayId: d.id,
                 startMin: slot * SLOT_MINUTES,
