@@ -35,6 +35,7 @@ import { ModalView, ResultModal } from "./search/ResultModal";
 import { SearchBar, State } from "./search/SearchBar";
 import { TermStatus } from "./TermStatus";
 import { Time } from "../lib/Time";
+import type { TimeRange } from "../lib/timeRange";
 import { useStableCallback } from "../lib/useStable";
 
 /**
@@ -447,6 +448,21 @@ export function App({ title }: AppProps) {
         </div>
         <DateTimePanel
           date={moment.date}
+          onSelection={(range: TimeRange) => {
+            navigate(handleView_s, {
+              view: {
+                ...viewFromUrl(window.location.href),
+                term: {
+                  ...moment,
+                  date: Day.fromId(range.dayId),
+                  time: new Time(
+                    Math.floor(range.startMin / 60),
+                    range.startMin % 60
+                  ),
+                },
+              },
+            });
+          }}
           onDate={(date: Day) => {
             navigate(handleView_s, {
               view: {
