@@ -1620,9 +1620,19 @@ input[type="checkbox"]:checked:hover {
   background: var(--modal);
   border-bottom: 1px solid var(--line);
 }
+/* modified for left side time bar to stick when scrolling horizontally */
 .weekly-time-gutter,
 .weekly-time-labels {
   border-right: 1px solid var(--line);
+  position: sticky;
+  left: 0;
+  background-color: var(--modal); /* opaque, so columns don't show through */
+}
+.weekly-time-gutter {
+  z-index: 1;
+}
+.weekly-time-labels {
+  z-index: 3; /* above the columns and their selection blocks */
 }
 .weekly-time-day {
   text-align: center;
