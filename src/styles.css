@@ -1681,7 +1681,7 @@ input[type="checkbox"]:checked:hover {
   font-size: 0.7rem;
   padding: 2px 4px;
   overflow: hidden;
-  pointer-events: none; /* lets the column keep receiving the drag */
+  pointer-events: auto; /* changed to auto so that when clicked on calendar range, it disappear */
 }
 
 .week-nav-btn {

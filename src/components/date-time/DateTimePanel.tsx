@@ -261,6 +261,12 @@ function WeeklyTimeGrid({ date, onDate, range, onRange }: WeeklyTimeGridProps) {
                     ((range.endMin - range.startMin) / SLOT_MINUTES) *
                     SLOT_HEIGHT,
                 }}
+                // User can click on a selection to clear it
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTimeRange(null);
+                }}
               >
                 {formatMinutes(range.startMin)} – {formatMinutes(range.endMin)}
               </div>
