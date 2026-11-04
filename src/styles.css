@@ -1598,7 +1598,22 @@ input[type="checkbox"]:checked:hover {
   display: none;
 }
 
-
+/* Keep our weekly calendar on the left */
+.date-time-panel.calendar-open {
+  position: fixed;
+  top: 85px;
+  left: 20px;
+  right: auto;
+  bottom: 20px;
+  width: 340px;
+  height: auto;
+  margin: 0;
+  max-height: calc(100vh - 105px);
+  border-radius: 15px;
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+}
 /* ---- Weekly time grid ---- */
 .weekly-time-grid {
   flex: auto;
