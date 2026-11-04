@@ -1793,3 +1793,100 @@ input[type="checkbox"]:checked:hover {
     margin: 0;
   }
 }
+
+
+/* Calendar toggle button */
+.calendar-toggle-btn {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 10;
+  width: 340px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 15px;
+  background-color: var(--modal);
+  color: var(--text);
+  border-radius: 12px;
+  box-shadow: var(--modal-shadow);
+  font-family: var(--normal);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.calendar-toggle-btn:hover {
+  background-color: var(--field);
+}
+
+/* Weekly calendar position */
+.date-time-panel.calendar-open {
+  position: fixed;
+  top: 136px;
+  left: 20px;
+  right: auto;
+  bottom: 20px;
+  width: 340px;
+  height: auto;
+  margin: 0;
+  max-height: calc(100vh - 156px);
+  border-radius: 15px;
+}
+
+/* Calendar hidden by default */
+.date-time-panel.calendar-open.date-time-panel-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+/* Calendar visible when button is clicked */
+.date-time-panel.calendar-open:not(.date-time-panel-hidden) {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+
+/* Current time information */
+.current-time-display {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 15px;
+  font-family: var(--normal);
+}
+
+.current-time-label {
+  color: var(--secondary);
+  font-size: 12px;
+}
+
+.current-time-display strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 690px) {
+  .calendar-toggle-btn {
+    top: 65px;
+    left: 10px;
+    width: 220px;
+  }
+
+  .date-time-panel.calendar-open {
+    top: 120px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: auto;
+    height: auto;
+    max-height: calc(100vh - 130px);
+    margin: 0;
+  }
+}
