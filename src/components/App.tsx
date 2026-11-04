@@ -386,10 +386,7 @@ export function App({ title }: AppProps) {
             buildingPanelVisible ? "bottom-panel-open" : ""
           } ${datePanelVisible ? "date-panel-open" : ""}`}
         >
-          <DateTimeButton
-            onClick={() => setShowDatePanel(true)}
-            disabled={datePanelVisible}
-          />
+         
           <div className="term-buttons">
             {[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((offset) => {
               const id = currentTermId + offset;
@@ -492,8 +489,8 @@ export function App({ title }: AppProps) {
               },
             });
           }}
-          visible={datePanelVisible}
-          closeable={!noticeVisible || state === null}
+          visible={true}
+          closeable={false}
           className={`${
             buildingPanelVisible ? "date-time-panel-bottom-panel" : ""
           } ${noticeVisible ? "date-time-panel-notice-visible" : ""}`}
