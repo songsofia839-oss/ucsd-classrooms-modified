@@ -385,15 +385,38 @@ export function App({ title }: AppProps) {
           }}
           visible={!noticeVisible}
         />
+
         <button
           type="button"
           className="calendar-toggle-btn"
           onClick={() => setShowDatePanel(!showDatePanel)}
           aria-expanded={showDatePanel}
+          style={{
+            position: "fixed",
+            top: "230px",
+            left: "24px",
+            width: "405px",
+            height: "44px",
+            zIndex: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            padding: "0 15px",
+            background: "white",
+            color: "#222",
+            border: "none",
+            borderRadius: "12px",
+            boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
         >
           <span>▦</span>
-          {showDatePanel ? "Hide Calendar" : "Select Time"}
+          {showDatePanel ? "Hide Calendar" : "Calendar"}
         </button>
+
         <ResultModal view={modalView} open={modal !== null} />
         <div
           className={`corner ${
