@@ -393,9 +393,9 @@ export function App({ title }: AppProps) {
           aria-expanded={showDatePanel}
           style={{
             position: "fixed",
-            top: "230px",
-            left: "24px",
-            width: "405px",
+            top: "80px",
+            left: "20px",
+            width: "360px",
             height: "44px",
             zIndex: 20,
             display: "flex",
