@@ -1974,3 +1974,42 @@ input[type="checkbox"]:checked:hover {
   }
 }
 
+/* Map zoom controls */
+.map-zoom-buttons {
+  position: fixed;
+  right: 24px;
+  bottom: 105px;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.map-zoom-buttons button {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--modal);
+  color: var(--text);
+  box-shadow: var(--modal-shadow);
+  font-size: 25px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.map-zoom-buttons button:hover:not(:disabled) {
+  background: var(--field);
+}
+
+.map-zoom-buttons button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@media (max-width: 690px) {
+  .map-zoom-buttons {
+    right: 18px;
+    bottom: 100px;
+  }
+}
+
