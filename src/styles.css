@@ -1890,3 +1890,87 @@ input[type="checkbox"]:checked:hover {
     margin: 0;
   }
 }
+
+
+/* Search and Calendar share one layout */
+.left-controls {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 6;
+
+  width: 360px;
+  max-width: calc(100vw - 40px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Search bar follows the parent container */
+.left-controls .search-wrapper {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Calendar button directly below search */
+.left-controls .calendar-toggle-btn {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+
+  width: 100% !important;
+  height: 44px;
+  margin: 0 !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  background-color: var(--modal);
+  color: var(--text);
+  border: none;
+  border-radius: 10px;
+  box-shadow: var(--modal-shadow);
+
+  font-family: var(--normal);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.left-controls .calendar-toggle-btn:hover {
+  background-color: var(--field);
+}
+
+/* Align opened calendar with the search bar */
+.date-time-panel.calendar-open {
+  left: 20px;
+  width: 360px;
+}
+
+/* Mobile */
+@media (max-width: 690px) {
+  .left-controls {
+    top: 10px;
+    left: 10px;
+    width: calc(100vw - 20px);
+    max-width: none;
+  }
+
+  .date-time-panel.calendar-open {
+    left: 10px;
+    right: 10px;
+    width: auto;
+  }
+}
+
