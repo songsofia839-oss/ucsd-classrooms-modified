@@ -349,6 +349,7 @@ export function App({ title }: AppProps) {
   return (
     <OnView.Provider value={handleView_s}>
       <MomentContext.Provider value={moment}>
+        <div className="left-controls">
         <SearchBar
           state={searchState}
           terms={terms}
@@ -387,15 +388,15 @@ export function App({ title }: AppProps) {
         />
 
         <button
-          type="button"
-          className="calendar-toggle-btn"
-          onClick={() => setShowDatePanel(!showDatePanel)}
-          aria-expanded={showDatePanel}
-          
-        >
-          <span>▦</span>
-          {showDatePanel ? "Hide Calendar" : "Calendar"}
-        </button>
+        type="button"
+        className="calendar-toggle-btn"
+        onClick={() => setShowDatePanel(!showDatePanel)}
+        aria-expanded={showDatePanel}
+      >
+        <span>▦</span>
+        {showDatePanel ? "Hide Calendar" : "Calendar"}
+      </button>
+      </div>
 
         <ResultModal view={modalView} open={modal !== null} />
         <div
