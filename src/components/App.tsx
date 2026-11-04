@@ -34,7 +34,7 @@ import { ModalView, ResultModal } from "./search/ResultModal";
 import { SearchBar, State } from "./search/SearchBar";
 import { TermStatus } from "./TermStatus";
 import { Time } from "../lib/Time";
-import type { TimeRange } from "../lib/timeRange";
+import { useTimeRange, type TimeRange } from "../lib/timeRange";
 import { useStableCallback } from "../lib/useStable";
 
 /**
@@ -134,6 +134,14 @@ export function App({ title }: AppProps) {
 
   const [showDatePanel, setShowDatePanel] = useState(false);
   const [clock, setClock] = useState(() => new Date());
+  const selectedRange = useTimeRange();
+
+  const formatRangeTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    const hour12 = hours % 12 || 12;
+    return `${hour12}:${String(mins).padStart(2, "0")} ${hours < 12 ? "AM" : "PM"}`;
+  };
 
   useEffect(() => {
     const timer = setInterval(() => setClock(new Date()), 1000);
@@ -448,15 +456,28 @@ export function App({ title }: AppProps) {
           </div>
           <div className="current-time-display">
             <span className="current-time-label">
-              Current Time · San Diego
+              {selectedRange ? "Selected Time Range" : "Current Time · San Diego"}
             </span>
-            <strong>
-              {new Intl.DateTimeFormat("en-US", {
-                timeZone: "America/Los_Angeles",
-                dateStyle: "short",
-                timeStyle: "short",
-              }).format(clock)}
-            </strong>
+          
+            {selectedRange ? (
+              <>
+                <strong>
+                  {Day.fromId(selectedRange.dayId).toString()}
+                </strong>
+                <strong>
+                  {formatRangeTime(selectedRange.startMin)} –{" "}
+                  {formatRangeTime(selectedRange.endMin)}
+                </strong>
+              </>
+            ) : (
+              <strong>
+                {new Intl.DateTimeFormat("en-US", {
+                  timeZone: "America/Los_Angeles",
+                  dateStyle: "short",
+                  timeStyle: "short",
+                }).format(clock)}
+              </strong>
+            )}
           </div>
           <TermStatus statuses={state?.status} />
         </div>
