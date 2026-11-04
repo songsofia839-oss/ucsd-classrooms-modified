@@ -7,7 +7,9 @@ import {
   northeast,
   southwest,
 } from "../lib/locations";
-import { isMeetingOngoing, useMoment } from "../lib/moment-context";
+import { isMeetingOngoing, useMoment, doesMeetingHappen } from "../lib/moment-context";
+import { useTimeRange } from "../lib/timeRange";
+import { Day } from "../lib/Day";
 import { Link } from "./Link";
 
 type BuildingButtonProps = {
@@ -26,6 +28,30 @@ export function BuildingButton({
   visible,
 }: BuildingButtonProps) {
   const moment = useMoment();
+  
+  const selectedRange = useTimeRange();
+  
+  const isRoomBusy = (meetings: RoomMeeting[]) => {
+    return meetings.some((meeting) => {
+      if (!selectedRange) {
+        return isMeetingOngoing(meeting, moment);
+      }
+  
+      const selectedDay = Day.fromId(selectedRange.dayId);
+  
+      return (
+        doesMeetingHappen(
+          meeting,
+          moment,
+          selectedDay,
+          meeting.special
+        ) &&
+        +meeting.time.start < selectedRange.endMin &&
+        +meeting.time.end > selectedRange.startMin
+      );
+    });
+  };
+
 
   const college = building.college;
 
@@ -70,9 +96,7 @@ export function BuildingButton({
           <>
             <span className="in-use">
               {
-               rooms.filter((meetings) =>
-                  !meetings.some((meeting) => isMeetingOngoing(meeting, moment))
-                ).length
+               rooms.filter(isRoomBusy).length
               }
             </span>
             /{rooms.length}
