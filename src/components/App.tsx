@@ -28,6 +28,7 @@ import {
 } from "../lib/View";
 import { BuildingPanel } from "./building/BuildingPanel";
 import { BuildingButton } from "./BuildingButton";
+import { ZoomableMap } from "./ZoomableMap";
 import { DateTimePanel } from "./date-time/DateTimePanel";
 import { Link, navigate } from "./Link";
 import { ModalView, ResultModal } from "./search/ResultModal";
@@ -542,18 +543,14 @@ export function App({ title }: AppProps) {
           >
             <span className="notice-text">{notice}</span>
           </p>
-          <div className="buildings">
+          <ZoomableMap>
             <div
               className="scroll-area"
               style={{
-                width: `${
-                  northeast.x - southwest.x + PADDING.horizontal * 2
-                }px`,
-                height: `${
-                  southwest.y - northeast.y + PADDING.top + PADDING.bottom
-                }px`,
-                backgroundSize: `${mapPosition.width}px`,
-                backgroundPosition: `${mapPosition.x}px ${mapPosition.y}px`,
+                width: `calc(${northeast.x - southwest.x + PADDING.horizontal * 2}px * var(--map-zoom))`,
+                height: `calc(${southwest.y - northeast.y + PADDING.top + PADDING.bottom}px * var(--map-zoom))`,
+                backgroundSize: `calc(${mapPosition.width}px * var(--map-zoom))`,
+                backgroundPosition: `calc(${mapPosition.x}px * var(--map-zoom)) calc(${mapPosition.y}px * var(--map-zoom))`,
               }}
             />
             {Object.values(buildings).map((building) => (
@@ -568,7 +565,7 @@ export function App({ title }: AppProps) {
                 visible={!!state?.buildings && building.code in state.buildings}
               />
             ))}
-          </div>
+          </ZoomableMap>
         </div>
         <BuildingPanel
           building={
