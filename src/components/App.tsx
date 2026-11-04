@@ -28,7 +28,6 @@ import {
 } from "../lib/View";
 import { BuildingPanel } from "./building/BuildingPanel";
 import { BuildingButton } from "./BuildingButton";
-import { DateTimeButton } from "./date-time/DateTimeButton";
 import { DateTimePanel } from "./date-time/DateTimePanel";
 import { Link, navigate } from "./Link";
 import { ModalView, ResultModal } from "./search/ResultModal";
@@ -134,6 +133,12 @@ export function App({ title }: AppProps) {
   );
 
   const [showDatePanel, setShowDatePanel] = useState(false);
+  const [clock, setClock] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setClock(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
   const [buildingCode, setBuildingCode] = useState<string | null>(null);
   const lastBuilding = useLast("CENTR", buildingCode);
   const [scrollTo, setScrollTo] = useState({ building: "CENTR", init: true });
@@ -157,7 +162,7 @@ export function App({ title }: AppProps) {
     .map((term) => termCode(term.year, term.quarter))
     .join(" ");
 
-  const datePanelVisible = showDatePanel || (noticeVisible && state !== null);
+  const datePanelVisible = showDatePanel;
   const buildingPanelVisible = buildingCode !== null && !noticeVisible;
 
   /** Only called by the `useEffect` below, whenever `moment.date` changes */
@@ -380,6 +385,15 @@ export function App({ title }: AppProps) {
           }}
           visible={!noticeVisible}
         />
+        <button
+          type="button"
+          className="calendar-toggle-btn"
+          onClick={() => setShowDatePanel(!showDatePanel)}
+          aria-expanded={showDatePanel}
+        >
+          <span>▦</span>
+          {showDatePanel ? "Hide Calendar" : "Select Time"}
+        </button>
         <ResultModal view={modalView} open={modal !== null} />
         <div
           className={`corner ${
@@ -428,20 +442,19 @@ export function App({ title }: AppProps) {
               );
             })}
           </div>
+          <div className="current-time-display">
+            <span className="current-time-label">
+              Current Time · San Diego
+            </span>
+            <strong>
+              {new Intl.DateTimeFormat("en-US", {
+                timeZone: "America/Los_Angeles",
+                dateStyle: "short",
+                timeStyle: "short",
+              }).format(clock)}
+            </strong>
+          </div>
           <TermStatus statuses={state?.status} />
-          <p className="credit">
-            Made by{" "}
-            <a href="https://www.instagram.com/sheeptester/" className="link">
-              @sheeptester
-            </a>
-            .{" "}
-            <a
-              href="https://github.com/SheepTester/ucsd-classrooms"
-              className="link"
-            >
-              GitHub
-            </a>
-          </p>
         </div>
         <DateTimePanel
           date={moment.date}
@@ -489,8 +502,8 @@ export function App({ title }: AppProps) {
               },
             });
           }}
-          visible={true}
-          closeable={false}
+          visible={showDatePanel}
+          closeable={true}
           className={`${
             buildingPanelVisible ? "date-time-panel-bottom-panel" : ""
           } ${noticeVisible ? "date-time-panel-notice-visible" : ""}`}
