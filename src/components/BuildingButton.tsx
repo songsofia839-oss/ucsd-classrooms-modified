@@ -85,8 +85,8 @@ export function BuildingButton({
         selected ? "selected" : ""
       } ${visible ? "" : "building-btn-hidden"}`}
       style={{
-        left: `${x - southwest.x + PADDING.horizontal}px`,
-        top: `${y - northeast.y + PADDING.top}px`,
+        left: `calc(${x - southwest.x + PADDING.horizontal}px * var(--map-zoom))`,
+        top: `calc(${y - northeast.y + PADDING.top}px * var(--map-zoom))`,
       }}
       elemRef={ref}
     >
