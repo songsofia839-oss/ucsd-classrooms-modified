@@ -1709,6 +1709,27 @@ input[type="checkbox"]:checked:hover {
   pointer-events: auto; /* changed to auto so that when clicked on calendar range, it disappear */
 }
 
+.current-time-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ea4335;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.current-time-indicator::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ea4335;
+}
+
 .week-nav-btn {
   flex: none;
   width: 40px;
