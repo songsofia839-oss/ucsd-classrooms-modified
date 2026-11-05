@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Day } from "../../lib/Day";
 import { Time } from "../../lib/Time";
 import { inPT } from "../../lib/now";
@@ -175,12 +175,21 @@ function WeeklyTimeGrid({ date, onDate, range, onRange }: WeeklyTimeGridProps) {
   const weekDates = Array.from({ length: 7 }, (_, i) => sunday.add(i));
   const drag = useRef<{ anchor: number } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  // current time indicator
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+  const currentTimePosition = (currentMinutes / SLOT_MINUTES) * SLOT_HEIGHT;
 
   // Open scrolled to 8 AM instead of midnight
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = 8 * 2 * SLOT_HEIGHT;
     }
+
+    const updateTime = () => setCurrentTime(new Date());
+    updateTime();
+    const interval = setInterval(updateTime, 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const slotAt = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -222,36 +231,46 @@ function WeeklyTimeGrid({ date, onDate, range, onRange }: WeeklyTimeGridProps) {
         </div>
 
         {weekDates.map((d) => (
-          <div
-            className="weekly-time-column"
-            key={d.id}
-            onPointerDown={(e) => {
-              e.currentTarget.setPointerCapture(e.pointerId);
-              const slot = slotAt(e);
-              drag.current = { anchor: slot };
-              onRange({
-                dayId: d.id,
-                startMin: slot * SLOT_MINUTES,
-                endMin: (slot + 1) * SLOT_MINUTES,
-              });
-            }}
-            onPointerMove={(e) => {
-              if (!drag.current) return;
-              const slot = slotAt(e);
-              const lo = Math.min(drag.current.anchor, slot);
-              const hi = Math.max(drag.current.anchor, slot);
-              onRange({
-                dayId: d.id,
-                startMin: lo * SLOT_MINUTES,
-                endMin: (hi + 1) * SLOT_MINUTES,
-              });
-            }}
-            onPointerUp={() => (drag.current = null)}
-            onPointerCancel={() => (drag.current = null)}
-          >
-            {hours.map((hour) => (
-              <div className="weekly-time-slot" key={hour} />
-            ))}
+        <div
+          className="weekly-time-column"
+          key={d.id}
+          onPointerDown={(e) => {
+            e.currentTarget.setPointerCapture(e.pointerId);
+            const slot = slotAt(e);
+            drag.current = { anchor: slot };
+            onRange({
+              dayId: d.id,
+              startMin: slot * SLOT_MINUTES,
+              endMin: (slot + 1) * SLOT_MINUTES,
+            });
+          }}
+          onPointerMove={(e) => {
+            if (!drag.current) return;
+            const slot = slotAt(e);
+            const lo = Math.min(drag.current.anchor, slot);
+            const hi = Math.max(drag.current.anchor, slot);
+            onRange({
+              dayId: d.id,
+              startMin: lo * SLOT_MINUTES,
+              endMin: (hi + 1) * SLOT_MINUTES,
+            });
+          }}
+          onPointerUp={() => (drag.current = null)}
+          onPointerCancel={() => (drag.current = null)}
+        >
+          {/* Current time indicator */}
+          {d.id === Day.today().id && (
+            <div
+              className="current-time-indicator"
+              style={{
+                top: `${currentTimePosition}px`,
+              }}
+            />
+          )}
+
+          {hours.map((hour) => (
+            <div className="weekly-time-slot" key={hour} />
+          ))}
             {range && range.dayId === d.id && (
               <div
                 className="weekly-time-selection"
