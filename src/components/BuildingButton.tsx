@@ -96,7 +96,7 @@ export function BuildingButton({
           <>
             <span className="in-use">
               {
-               rooms.filter(isRoomBusy).length
+               rooms.filter((meetings) => !isRoomBusy(meetings)).length
               }
             </span>
             /{rooms.length}
