@@ -1,12 +1,14 @@
 # UCSD classroom schedules
 
 Live: 
-https://songsofia839-oss.github.io/ucsd-classrooms-modified/
+//songsofia839-oss.github.io/ucsd-classrooms-modified/
 
-![Screenshot of classrooms website](./static/open-graph.png)
+<img width="1468" height="833" alt="Screenshot 2026-11-08 at 4 27 16 PM" src="https://github.com/user-attachments/assets/2026e326-871b-4b44-8dd8-b7af25eb8ea8" />
 
 > [!NOTE]
 > The classrooms website was originally developed in [SheepTester/uxdy/classrooms](https://github.com/SheepTester/uxdy/tree/main/classrooms); refer to the old repo for its commit history.
+>
+> The 3D features extend from [wenhaoquestion/ucsd-classrooms](https://github.com/wenhaoquestion/ucsd-classrooms).
 
 ## Features
 
@@ -31,22 +33,13 @@ https://songsofia839-oss.github.io/ucsd-classrooms-modified/
 - **Guiding students to buildings.** Where is Mosaic? It's next to Wolftown.
   - Feature: link to buildings directly, include photos of buildings.
 
-Features to add:
+Features added: 
 
-- [x] Scrape data from schedule of classes rather than WebReg (so it doesn't require authentication)
-- [x] Search by professor and course code
-- [x] Set current time so can see what classrooms are available at a given date/time
-- [x] Use Pacific Time regardless of browser time zone
-
-- [x] Load summer session 3 when needed
-- [ ] Handle co-scheduled courses
-- [x] Show when the quarter's data was last refreshed
-- [x] Show all images for building
-
-- [x] Support using back/forward for modals
-- [x] Permalink buildings, courses, and professors
-- [x] Permalink dates
-- [ ] Simplify term selection
+- Modified UI for time-picker to be Google Calendar-like
+- Modified outer UI for the time-picker
+- Fixed a bug in the original search system (opposite availability display)
+- Integrated 3D classroom visualization that extends [wenhaoquestion/ucsd-classrooms](https://github.com/wenhaoquestion/ucsd-classrooms)
+- Integrated Zoom-in/Zoom-out feature
 
 ## Development
 
@@ -78,4 +71,5 @@ Known issues:
 
 - I originally was going to use `$` as the suffix, but in VS Code, `$` is not considered a word character and doesn't get selected by ctrl+D. I purposefully included an underscore so it's clear it comes from a naming convention and isn't really part of the variable name (e.g. `myDeltaS` vs `myDelta_s`).
 
-This project extends [SheepTester/ucsd-classrooms](https://github.com/SheepTester/ucsd-classrooms).
+This project extends [SheepTester/ucsd-classrooms](https://github.com/SheepTester/ucsd-classrooms). 
+The 3D features extend [wenhaoquestion/ucsd-classrooms](https://github.com/wenhaoquestion/ucsd-classrooms).
