@@ -1,7 +1,7 @@
 # UCSD classroom schedules
 
 Live: 
-//songsofia839-oss.github.io/ucsd-classrooms-modified/
+https://songsofia839-oss.github.io/ucsd-classrooms-modified/
 
 <img width="1468" height="833" alt="Screenshot 2026-11-08 at 4 27 16 PM" src="https://github.com/user-attachments/assets/2026e326-871b-4b44-8dd8-b7af25eb8ea8" />
 
