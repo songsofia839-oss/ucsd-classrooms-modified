@@ -7,6 +7,10 @@ import { mapPosition, northeast, PADDING, southwest } from "../lib/locations";
 import { fromViewTerm, MomentContext } from "../lib/moment-context";
 import { Course } from "../lib/section-types";
 import { Term, TermCache, TermError } from "../lib/TermCache";
+import { ExplorerIntro } from "./explorer/BuildingExplorer";
+import { useExplorerPreference } from "../lib/explorerPreference";
+import { hasIndoorLayout } from "../lib/indoor/manifest";
+import { ScheduleAvailability } from "../lib/indoor/roomStatus";
 import {
   CurrentTerm,
   fromTermId,
@@ -152,6 +156,9 @@ export function App({ title }: AppProps) {
   const lastBuilding = useLast("CENTR", buildingCode);
   const [scrollTo, setScrollTo] = useState({ building: "CENTR", init: true });
   const [room, setRoom] = useState<string | null>(null);
+  const [explorerEnabled, setExplorerEnabled_s] = useExplorerPreference();
+
+  const explorerIntro: ExplorerIntro = "fade";
 
   const [showResults, setShowResults] = useState(false);
   const [searchState, setSearchState] = useState<State>({ type: "unloaded" });
@@ -173,6 +180,11 @@ export function App({ title }: AppProps) {
 
   const datePanelVisible = showDatePanel;
   const buildingPanelVisible = buildingCode !== null && !noticeVisible;
+  const availability: ScheduleAvailability = !state?.buildings
+    ? "unavailable"
+    : state.errors.length > 0
+    ? "partial"
+    : "complete";
 
   /** Only called by the `useEffect` below, whenever `moment.date` changes */
   async function handleDate(date: Day, skipHolidayCheck: boolean) {
@@ -581,6 +593,10 @@ export function App({ title }: AppProps) {
           rooms={state?.buildings?.[lastBuilding] ?? {}}
           visible={buildingPanelVisible}
           rightPanelOpen={datePanelVisible}
+          availability={availability}
+          explorerIntro={explorerIntro}
+          explorerEnabled={explorerEnabled}
+          onExplorerEnabled_s={setExplorerEnabled_s}
         />
       </MomentContext.Provider>
     </OnView.Provider>

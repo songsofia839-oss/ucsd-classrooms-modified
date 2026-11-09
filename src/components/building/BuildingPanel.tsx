@@ -8,6 +8,11 @@ import { Image } from "../Image";
 import { Link } from "../Link";
 import { RoomList } from "./RoomList";
 import { RoomSchedule } from "./RoomSchedule";
+import { useMemo, useState } from "react";
+import { BuildingExplorer, ExplorerIntro } from "../explorer/BuildingExplorer";
+import { hasIndoorLayout } from "../../lib/indoor/manifest";
+import { ScheduleAvailability } from "../../lib/indoor/roomStatus";
+import { useIndoorLayout } from "../../lib/indoor/useIndoorLayout";
 
 type BuildingPanelContentProps = {
   building: BuildingDatum;
@@ -125,25 +130,67 @@ function BuildingPanelContent({
 export type BuildingPanelProps = BuildingPanelContentProps & {
   visible: boolean;
   rightPanelOpen: boolean;
+  availability: ScheduleAvailability;
+  explorerIntro: ExplorerIntro;
+  explorerEnabled: boolean;
+  onExplorerEnabled_s: (enabled: boolean) => void;
 };
-export function BuildingPanel({
-  visible,
-  rightPanelOpen,
-  ...props
-}: BuildingPanelProps) {
+export function BuildingPanel({ visible, rightPanelOpen, ...props }: BuildingPanelProps) {
+
+  // Get the selected building code
+  const code = props.building.code;
+
+  // Get all room numbers in this building
+  const roomKeys = useMemo(
+    () => Object.keys(props.rooms),
+    [props.rooms]
+  );
+
+  // Load the indoor layout for this building
+  const layout = useIndoorLayout(
+    code,
+    props.building.name,
+    true,
+    roomKeys
+  );
+
+  // Determine whether the 3D viewer should be displayed
+  const explorerOpen =
+    props.explorerEnabled && hasIndoorLayout(code);
+
+  // Track which room the user is hovering over
+  const [hoveredRoom, setHoveredRoom] = useState<string | null>(null);
+
   return (
     <div
-      className={`building-panel ${visible ? "" : "building-panel-invisible"} ${
-        rightPanelOpen ? "right-panel-open" : ""
+      className={`building-panel ${
+        visible ? "" : "building-panel-invisible"
+      } ${rightPanelOpen ? "right-panel-open" : ""} ${
+        explorerOpen ? "explorer-mode" : ""
       }`}
     >
-      <BuildingPanelContent
-        // Force new elements (disable transition) when building changes
-        key={props.building.code}
-        // For some reason this needs to be after `key` or then Deno gets pissed
-        // about `react` not existing.
-        {...props}
-      />
+      {explorerOpen && (
+        <BuildingExplorer
+          key={code}
+          building={props.building}
+          room={props.room}
+          rooms={props.rooms}
+          availability={props.availability}
+          layout={layout}
+          active={visible}
+          intro={props.explorerIntro}
+          hoveredRoom={hoveredRoom}
+          onHoverRoom_s={setHoveredRoom}
+          layoutKey={`${rightPanelOpen}`}
+        />
+      )}
+
+      <div className="building-panel-content">
+        <BuildingPanelContent
+          key={code}
+          {...props}
+        />
+      </div>
     </div>
   );
 }
