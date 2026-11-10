@@ -415,7 +415,7 @@ export function App({ title }: AppProps) {
         aria-expanded={showDatePanel}
       >
         <span>▦</span>
-        {showDatePanel ? "Hide Time Picker" : "Pick a Time"}
+        {showDatePanel ? "Hide Time Picker" : "Find a Room at That Time"}
       </button>
       </div>
 
