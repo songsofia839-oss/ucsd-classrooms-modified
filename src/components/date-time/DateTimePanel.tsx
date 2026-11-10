@@ -153,7 +153,8 @@ const handleRange = (next: TimeRange) => {
         </button>
       </div>
 
-        date={date}
+        <WeeklyTimeGrid
+          date={date}
           visible={visible}
           onDate={handleGridDate}
           range={range}
@@ -166,11 +167,6 @@ const handleRange = (next: TimeRange) => {
 type WeeklyTimeGridProps = {
   date: Day;
   visible: boolean;
-  onDate: (date: Day) => void;
-  range: TimeRange | null;
-  onRange: (range: TimeRange) => void;
-};
-  date: Day;
   onDate: (date: Day) => void;
   range: TimeRange | null;
   onRange: (range: TimeRange) => void;
