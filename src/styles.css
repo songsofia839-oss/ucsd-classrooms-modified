@@ -2034,3 +2034,24 @@ input[type="checkbox"]:checked:hover {
   }
 }
 
+/* Red current-time indicator */
+.current-time-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--red);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.current-time-indicator::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--red);
+}
