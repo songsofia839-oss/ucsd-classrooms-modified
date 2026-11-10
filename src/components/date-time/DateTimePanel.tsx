@@ -153,23 +153,35 @@ const handleRange = (next: TimeRange) => {
         </button>
       </div>
 
-      <WeeklyTimeGrid
         date={date}
-        onDate={handleGridDate}
-        range={range}
-        onRange={handleRange}
-      />
+          visible={visible}
+          onDate={handleGridDate}
+          range={range}
+          onRange={handleRange}
+        />
     </form>
   );
 }
 
 type WeeklyTimeGridProps = {
   date: Day;
+  visible: boolean;
   onDate: (date: Day) => void;
   range: TimeRange | null;
   onRange: (range: TimeRange) => void;
 };
-function WeeklyTimeGrid({ date, onDate, range, onRange }: WeeklyTimeGridProps) {
+  date: Day;
+  onDate: (date: Day) => void;
+  range: TimeRange | null;
+  onRange: (range: TimeRange) => void;
+};
+function WeeklyTimeGrid({
+  date,
+  visible,
+  onDate,
+  range,
+  onRange,
+}: WeeklyTimeGridProps) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const sunday = date.sunday;
   const weekDates = Array.from({ length: 7 }, (_, i) => sunday.add(i));
@@ -180,17 +192,69 @@ function WeeklyTimeGrid({ date, onDate, range, onRange }: WeeklyTimeGridProps) {
   const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
   const currentTimePosition = (currentMinutes / SLOT_MINUTES) * SLOT_HEIGHT;
 
-  // Open scrolled to 8 AM instead of midnight
+  
+  /* Keep the red current-time indicator updated */
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 8 * 2 * SLOT_HEIGHT;
-    }
-
     const updateTime = () => setCurrentTime(new Date());
+  
     updateTime();
+  
     const interval = setInterval(updateTime, 60 * 1000);
+  
     return () => clearInterval(interval);
   }, []);
+  
+  /* Scroll to the red indicator whenever the calendar opens */
+  useEffect(() => {
+    if (!visible) return;
+  
+    const frame = requestAnimationFrame(() => {
+      const grid = scrollRef.current;
+      if (!grid) return;
+  
+      const todayIndex = weekDates.findIndex(
+        (d) => d.id === Day.today().id
+      );
+  
+      // Only scroll to the indicator when viewing the current week.
+      if (todayIndex === -1) return;
+  
+      const now = new Date();
+      const minutes = now.getHours() * 60 + now.getMinutes();
+  
+      const markerPosition =
+        (minutes / SLOT_MINUTES) * SLOT_HEIGHT;
+  
+      const headerHeight =
+        grid.querySelector<HTMLElement>(
+          ".weekly-time-grid-header"
+        )?.offsetHeight ?? 0;
+  
+      // Center the red line vertically.
+      grid.scrollTop = Math.max(
+        0,
+        markerPosition + headerHeight - grid.clientHeight / 2
+      );
+  
+      // Also bring today's column into view horizontally.
+      const days = grid.querySelectorAll<HTMLElement>(
+        ".weekly-time-day"
+      );
+  
+      const todayCell = days[todayIndex];
+  
+      if (todayCell) {
+        grid.scrollLeft = Math.max(
+          0,
+          todayCell.offsetLeft +
+            todayCell.offsetWidth / 2 -
+            grid.clientWidth / 2
+        );
+      }
+    });
+  
+    return () => cancelAnimationFrame(frame);
+  }, [visible, sunday.id]);
 
   const slotAt = (e: React.PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
