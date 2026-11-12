@@ -4,7 +4,7 @@ const KEY = "ucsd-classrooms:indoor-3d";
 
 /** Phones start with the room list, which is quicker to scan on a small screen. */
 function defaultEnabled(): boolean {
-  return !window.matchMedia?.("(max-width: 690px)").matches;
+  return true;
 }
 
 function read(): boolean {
