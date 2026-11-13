@@ -1,3 +1,4 @@
+import { fetchLegacySchedule } from "./legacyScheduleSource";
 import {
   CourseFormatError,
   coursesFromFile,
@@ -35,9 +36,7 @@ export class TermCache {
     term: string,
     summer: boolean
   ): Promise<TermCourses | "unavailable"> {
-    const response = await fetch(
-      `https://sheeptester.github.io/uxdy/data/classrooms-${term}.txt`
-    );
+    const response = await fetchLegacySchedule(term);
     if (response.ok) {
       try {
         return coursesFromFile(await response.text(), summer);
